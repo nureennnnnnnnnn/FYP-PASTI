@@ -1,0 +1,49 @@
+@startuml PASTI_Sequence_AddTeacher
+title PASTI - Sequence Diagram: Admin Adds a New Teacher
+
+actor Admin
+participant "Dashboard.jsx\n(handleAddTeacher)" as UI
+participant "Firebase Auth" as Auth
+participant "Firestore\n(users collection)" as DB
+
+Admin -> UI : Fill teacher form (name, IC, etc.)\n+ click "Save Profile"
+activate UI
+
+UI -> UI : validate fields\n(IC 12 digits, phone format)
+UI -> UI : generateCredentials(firstName, lastName, ic)\n-> username, email, password
+
+UI -> Auth : createUserWithEmailAndPassword(email, password)
+activate Auth
+note right
+  This signs Firebase Auth in
+  as the NEW teacher, replacing
+  the admin's active session.
+end note
+Auth --> UI : new teacher UID
+deactivate Auth
+
+UI -> DB : setDoc(users/{uid}, {\n  role: "teacher", active: true,\n  name, ic, qualifications, ... })
+activate DB
+DB --> UI : write confirmed
+deactivate DB
+
+UI -> Auth : signInWithEmailAndPassword(adminEmail, adminPassword)
+activate Auth
+note right
+  adminPassword was cached in
+  sessionStorage at admin login,
+  used here to restore the
+  admin's own session.
+end note
+Auth --> UI : admin session restored
+deactivate Auth
+
+UI -> DB : fetchAdminData(adminUid)
+DB --> UI : admin profile
+UI -> DB : fetchAllData()\n(classrooms, users, syllabus,\nstudents, progress)
+DB --> UI : refreshed lists
+
+UI -> Admin : show success message\n"Teacher {username} created!\nPassword: {password}"
+deactivate UI
+
+@enduml

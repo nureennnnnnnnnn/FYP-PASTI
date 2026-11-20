@@ -1,0 +1,110 @@
+/* ---- PASTI modern UI system ---- */
+
+@keyframes pastiFadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pastiFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pastiScaleIn {
+  from { opacity: 0; transform: scale(0.94) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes pastiPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+}
+
+.pasti-fade-in {
+  animation: pastiFadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.pasti-card {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+.pasti-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(27, 94, 32, 0.14) !important;
+}
+
+.pasti-btn {
+  transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease, opacity 0.18s ease;
+}
+.pasti-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  box-shadow: 0 10px 24px rgba(46, 125, 50, 0.32);
+}
+.pasti-btn:active:not(:disabled) {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+.pasti-btn:disabled {
+  opacity: 0.75;
+}
+
+.pasti-icon-btn {
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.18s ease, box-shadow 0.18s ease;
+}
+.pasti-icon-btn:hover {
+  transform: translateY(-2px) scale(1.08);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+.pasti-input {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.pasti-input:focus {
+  border-color: #2e7d32 !important;
+  box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.14);
+  outline: none;
+}
+
+.pasti-nav-btn {
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
+}
+.pasti-nav-btn:hover {
+  transform: translateY(-3px);
+}
+
+.pasti-notif-badge {
+  animation: pastiPulse 1.8s ease-in-out infinite;
+}
+
+.pasti-overlay {
+  animation: pastiFadeIn 0.2s ease both;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.pasti-modal {
+  animation: pastiScaleIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.pasti-row {
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.pasti-row:hover {
+  transform: translateX(2px);
+}
+
+/* thin, brand-tinted scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c8e6c9;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a5d6a7;
+}

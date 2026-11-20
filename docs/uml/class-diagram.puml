@@ -1,0 +1,118 @@
+@startuml PASTI_Class_Diagram
+title PASTI - Firestore Data Model (Class Diagram)
+
+abstract class User {
+  +id : string
+  +name : string
+  +firstName : string
+  +lastName : string
+  +username : string
+  +email : string
+  +password : string
+  +ic : string
+  +age : int
+  +address : string
+  +emergencyName : string
+  +emergencyPhone : string
+  +role : string
+  +profilePicUrl : string
+  +active : bool
+  +createdAt : Timestamp
+  +deactivatedAt : Timestamp
+}
+
+class Admin {
+}
+
+class Teacher {
+  +qualifications : string
+  +specialty : string
+  +entryYear : string
+}
+
+class Parent {
+  +phone : string
+  +childName : string
+}
+
+User <|-- Admin
+User <|-- Teacher
+User <|-- Parent
+
+class Classroom {
+  +id : string
+  +name : string
+  +ageCategory : int
+  +limit : int
+  +teacherId : string
+  +teacherName : string
+  +enrolledCount : int
+  +createdAt : Timestamp
+}
+
+class Student {
+  +id : string
+  +name : string
+  +dob : string
+  +gender : string
+  +age : int
+  +ic : string
+  +classroomId : string
+  +parentId : string
+  +verified : bool
+  +deleted : bool
+  +deletedAt : Timestamp
+  +createdAt : Timestamp
+}
+
+class Syllabus {
+  +id : string
+  +ageCategory : int
+  +lessons : string[]
+  +totalLessons : int
+  +createdAt : Timestamp
+}
+
+class Progress {
+  +id : string
+  +studentId : string
+  +classroomId : string
+  +lessons : Map<string, bool>
+  +completedCount : int
+  +totalLessons : int
+  +lastUpdated : Timestamp
+}
+
+class Notification {
+  +id : string
+  +type : string
+  +message : string
+  +parentId : string
+  +parentName : string
+  +classroomId : string
+  +timestamp : Timestamp
+  +read : bool
+}
+
+Teacher "1" -- "0..*" Classroom : teaches >
+Classroom "1" -- "0..*" Student : enrolls >
+Parent "1" -- "1..*" Student : has children >
+Student "1" -- "1" Progress : tracked by >
+Classroom "1" -- "0..*" Progress : aggregates >
+Syllabus "1" ..> "0..*" Classroom : matched by ageCategory
+Parent "1" -- "0..*" Notification : receives >
+Classroom "1" -- "0..*" Notification : relates to >
+
+note right of Progress
+  Document ID == Student ID.
+  lessons map keys are "L1", "L2", ... "Ln"
+  (n = syllabus.totalLessons for that age group)
+end note
+
+note bottom of Syllabus
+  No direct foreign key to Classroom;
+  matched at query time via
+  syllabus.ageCategory == classroom.ageCategory
+end note
+
+@enduml

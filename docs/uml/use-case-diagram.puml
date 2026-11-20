@@ -1,0 +1,76 @@
+@startuml PASTI_Use_Case_Diagram
+title PASTI - Use Case Diagram
+left to right direction
+
+actor Admin
+actor Teacher
+actor Parent
+
+rectangle "PASTI System" {
+  usecase "Login" as UC_Login
+  usecase "Logout" as UC_Logout
+  usecase "Edit Own Profile" as UC_EditProfile
+
+  usecase "Manage Classrooms\n(Add/Edit/Delete)" as UC_Classrooms
+  usecase "Filter/Search/Sort\nClassrooms" as UC_FilterClass
+  usecase "View Classroom Detail\n& Student Progress Table" as UC_ClassDetail
+
+  usecase "Manage Teachers\n(Add/Edit)" as UC_Teachers
+  usecase "Deactivate Teacher" as UC_DeactivateTeacher
+  usecase "Reactivate Teacher" as UC_ReactivateTeacher
+  usecase "Filter/Search Teachers" as UC_FilterTeachers
+
+  usecase "Manage Parents & Children\n(Add/Edit)" as UC_Parents
+  usecase "Deactivate Parent" as UC_DeactivateParent
+  usecase "Reactivate Parent" as UC_ReactivateParent
+  usecase "Filter/Search Parents" as UC_FilterParents
+
+  usecase "Manage Syllabus\n(Add/Edit/Delete lessons)" as UC_Syllabus
+
+  usecase "Remove Student\n(soft delete)" as UC_RemoveStudent
+  usecase "View All Students\nDirectory" as UC_AllStudents
+
+  usecase "View Reports" as UC_Reports
+  usecase "View Alerts /\nNotifications" as UC_Alerts
+
+  usecase "View Child's Progress" as UC_ViewChildProgress
+  usecase "Update Student Progress\n(mark lessons complete)" as UC_UpdateProgress
+  usecase "View Syllabus" as UC_ViewSyllabus
+}
+
+Admin --> UC_Login
+Admin --> UC_Logout
+Admin --> UC_EditProfile
+Admin --> UC_Classrooms
+Admin --> UC_FilterClass
+Admin --> UC_ClassDetail
+Admin --> UC_Teachers
+Admin --> UC_DeactivateTeacher
+Admin --> UC_ReactivateTeacher
+Admin --> UC_FilterTeachers
+Admin --> UC_Parents
+Admin --> UC_DeactivateParent
+Admin --> UC_ReactivateParent
+Admin --> UC_FilterParents
+Admin --> UC_Syllabus
+Admin --> UC_RemoveStudent
+Admin --> UC_AllStudents
+Admin --> UC_Reports
+Admin --> UC_Alerts
+
+Teacher --> UC_Login
+Teacher --> UC_Logout
+Teacher --> UC_EditProfile
+Teacher --> UC_UpdateProgress
+Teacher --> UC_ViewSyllabus
+
+Parent --> UC_Login
+Parent --> UC_Logout
+Parent --> UC_EditProfile
+Parent --> UC_ViewChildProgress
+
+UC_DeactivateTeacher .> UC_ReactivateTeacher : <<enables>>
+UC_DeactivateParent .> UC_ReactivateParent : <<enables>>
+UC_Classrooms .> UC_ClassDetail : <<include>>
+
+@enduml

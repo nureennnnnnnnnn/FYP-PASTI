@@ -1,0 +1,57 @@
+@startuml PASTI_Component_Diagram
+title PASTI - System Architecture (Component Diagram)
+
+skinparam componentStyle rectangle
+
+actor Admin
+actor Teacher
+actor Parent
+
+package "pasti-admin (Web)" {
+  [React + Vite SPA] as WebApp
+  component "Login Page" as WebLogin
+  component "Dashboard\n(Classrooms/Staff/Parents/\nStudents/Syllabus/Reports/Alerts)" as WebDashboard
+  component "Admin Profile Page" as WebProfile
+}
+
+package "PASTI ALQAWIYYUL AMIN (Android)" {
+  [Kotlin App] as AndroidApp
+  component "MainActivity\n(Login)" as AndroidLogin
+  component "TeacherHomeActivity\nTeacherProgressActivity\nTeacherSyllabusActivity\nTeacherProfileActivity" as TeacherActivities
+  component "ParentHomeActivity\nParentProfileActivity" as ParentActivities
+}
+
+cloud "Firebase Project\n(pasti-d4b7e)" {
+  database "Cloud Firestore" as Firestore
+  [Firebase Authentication] as FirebaseAuth
+}
+
+Admin --> WebLogin
+WebLogin --> WebDashboard
+WebDashboard --> WebProfile
+WebApp *-- WebLogin
+WebApp *-- WebDashboard
+WebApp *-- WebProfile
+
+Teacher --> AndroidLogin
+Parent --> AndroidLogin
+AndroidLogin --> TeacherActivities
+AndroidLogin --> ParentActivities
+AndroidApp *-- AndroidLogin
+AndroidApp *-- TeacherActivities
+AndroidApp *-- ParentActivities
+
+WebApp --> FirebaseAuth : sign in / create user
+WebApp --> Firestore : read/write\n(users, classrooms, students,\nsyllabus, progress, notifications)
+
+AndroidApp --> FirebaseAuth : sign in
+AndroidApp --> Firestore : read/write\n(users, students, classrooms,\nsyllabus, progress)
+
+note right of Firestore
+  Single shared backend:
+  the Admin web app manages data,
+  the Android app is read/update
+  for Teachers and Parents.
+end note
+
+@enduml
